@@ -1,3 +1,9 @@
+/*
+Author : Ahmad Hassan Yassin
+This code uses this android App : http://www.ardumotive.com/bluetooth-rc-car.html
+Add the motor pin in the #define lines
+To modify the directions in the function modify the "i" intger ivariable 
+*/
 #define en_motorA
 #define en_motorB
 #define A1_pin
@@ -22,10 +28,12 @@ void setup(){
 }
 
 void loop(){
+	//Take the iput word from the app
 	int input_word;
 	if(Serial.available())
 		input_word = Serial.read();
 
+	//setting the magnitude of any action
 	int magnitude = 0;
 	switch(input_word){
 		case 0:
@@ -43,9 +51,9 @@ void loop(){
 		case 4:
 			magnitude = 255;
 			break;
-
 	}
 
+	//moving the car according to the needed direction
 	switch(input_word){
 		case 'F':
 			forward(magnitude);
