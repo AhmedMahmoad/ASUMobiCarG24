@@ -5,10 +5,12 @@
 #define B1_pin
 #define B2_pin
 
-void forward(magnitude);
-void backward(magnitude);
-void turn_left(magnitude);
-void turn_right(magnitude);
+int input_word;
+
+void forward(int magnitude);
+void backward(int magnitude);
+void turn_left(int magnitude);
+void turn_right(int magnitude);
 void stop();
 
 void setup(){
@@ -23,10 +25,50 @@ void setup(){
 
 
 void loop(){
+	if(Serial.available())
+		input_word = Serial.read();
 
+	int magnitude = 0;
+	switch(input_word){
+		case 0:
+			magnitude = 0;
+			break;
+		case 1:
+			magnitude = 64;
+			break;
+		case 2:
+			magnitude = 128;
+			break;
+		case 3:
+			magnitude = 192;
+			break;
+		case 4:
+			magnitude = 255;
+			break;
+
+	}
+
+	switch(input_word){
+		case 'F':
+			forward(magnitude);
+			break;
+		case 'B':
+			backward(magnitude);
+			break;
+		case 'L':
+			turn_left(magnitude);
+			break;
+		case 'R':
+			turn_right(magnitude);
+			break;
+		case 'S':
+			stop();
+			break;
+
+	}
 }
 
-void forward(magnitude){
+void forward(int magnitude){
 	int i = 1;
 	digitalWrite(A2_pin,i);
 	digitalWrite(A1_pin,1-i);
@@ -36,7 +78,7 @@ void forward(magnitude){
 	analogWrite(en_motorB,magnitude);
 }
 
-void backward(magnitude){
+void backward(int magnitude){
 	int i = 0;
 	digitalWrite(A2_pin,i);
 	digitalWrite(A1_pin,1-i);
@@ -46,22 +88,22 @@ void backward(magnitude){
 	analogWrite(en_motorB,magnitude);
 }
 
-void turn_left(magnitude){	
+void turn_left(int magnitude){	
 	int i = 1;
 	digitalWrite(A2_pin,i);
 	digitalWrite(A1_pin,1-i);
-	digitalWrite(B2_pin,i);
-	digitalWrite(B1_pin,1-i);
+	digitalWrite(B2_pin,1-i);
+	digitalWrite(B1_pin,1);
 	analogWrite(en_motorA,magnitude);
 	analogWrite(en_motorB,magnitude);
 }
 
-void turn_right(magnitude){
-	int i = 1;
+void turn_right(int magnitude){
+	int i = 0;
 	digitalWrite(A2_pin,i);
 	digitalWrite(A1_pin,1-i);
-	digitalWrite(B2_pin,i);
-	digitalWrite(B1_pin,1-i);
+	digitalWrite(B2_pin,1-i);
+	digitalWrite(B1_pin,i);
 	analogWrite(en_motorA,magnitude);
 	analogWrite(en_motorB,magnitude);
 }
