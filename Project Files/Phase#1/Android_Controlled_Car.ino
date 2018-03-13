@@ -5,12 +5,10 @@
 #define B1_pin
 #define B2_pin
 
-int input_word;
-
-void forward(int magnitude);
-void backward(int magnitude);
-void turn_left(int magnitude);
-void turn_right(int magnitude);
+void forward(int mag);
+void backward(int mag);
+void turn_left(int mag);
+void turn_right(int mag);
 void stop();
 
 void setup(){
@@ -23,8 +21,8 @@ void setup(){
 	pinMode(B2_pin, OUTPUT);
 }
 
-
 void loop(){
+	int input_word;
 	if(Serial.available())
 		input_word = Serial.read();
 
@@ -68,48 +66,48 @@ void loop(){
 	}
 }
 
-void forward(int magnitude){
+void forward(int mag){
 	int i = 1;
 	digitalWrite(A2_pin,i);
 	digitalWrite(A1_pin,1-i);
 	digitalWrite(B2_pin,i);
 	digitalWrite(B1_pin,1-i);
-	analogWrite(en_motorA,magnitude);
-	analogWrite(en_motorB,magnitude);
+	analogWrite(en_motorA,mag);
+	analogWrite(en_motorB,mag);
 }
 
-void backward(int magnitude){
+void backward(int mag){
 	int i = 0;
 	digitalWrite(A2_pin,i);
 	digitalWrite(A1_pin,1-i);
 	digitalWrite(B2_pin,i);
 	digitalWrite(B1_pin,1-i);
-	analogWrite(en_motorA,magnitude);
-	analogWrite(en_motorB,magnitude);
+	analogWrite(en_motorA,mag);
+	analogWrite(en_motorB,mag);
 }
 
-void turn_left(int magnitude){	
+void turn_left(int mag){	
 	int i = 1;
 	digitalWrite(A2_pin,i);
 	digitalWrite(A1_pin,1-i);
 	digitalWrite(B2_pin,1-i);
 	digitalWrite(B1_pin,1);
-	analogWrite(en_motorA,magnitude);
-	analogWrite(en_motorB,magnitude);
+	analogWrite(en_motorA,mag);
+	analogWrite(en_motorB,mag);
 }
 
-void turn_right(int magnitude){
+void turn_right(int mag){
 	int i = 0;
 	digitalWrite(A2_pin,i);
 	digitalWrite(A1_pin,1-i);
 	digitalWrite(B2_pin,1-i);
 	digitalWrite(B1_pin,i);
-	analogWrite(en_motorA,magnitude);
-	analogWrite(en_motorB,magnitude);
+	analogWrite(en_motorA,mag);
+	analogWrite(en_motorB,mag);
 }
 
 void stop(){
-	digitalWrite(A2_pin,0);
+	digitalWrite(A2_pin,0);-
 	digitalWrite(A1_pin,0);
 	digitalWrite(B2_pin,0);
 	digitalWrite(B1_pin,0);
