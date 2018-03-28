@@ -4,21 +4,24 @@ This code uses this android App : http://www.ardumotive.com/bluetooth-rc-car.htm
 Add the motor pin in the #define lines
 To modify the directions in the function modify the "i" intger ivariable 
 */
-#define en_motorA
-#define en_motorB
-#define A1_pin
-#define A2_pin
-#define B1_pin
-#define B2_pin
+#define en_motorA 10
+#define en_motorB 11
+#define A1_pin 9
+#define A2_pin 8
+#define B1_pin 7 
+#define B2_pin 6
+
+String inputString="";
+int magnitude
 
 void forward(int mag);
 void backward(int mag);
 void turn_left(int mag);
 void turn_right(int mag);
-void stop();
+void stop_car();
 
 void setup(){
-	Serial.begin(38400);
+	Serial.begin(9600);
 	pinMode(en_motorB, OUTPUT);
 	pinMode(en_motorA, OUTPUT);
 	pinMode(A1_pin, OUTPUT);
@@ -29,49 +32,37 @@ void setup(){
 
 void loop(){
 	//Take the iput word from the app
-	int input_word;
-	if(Serial.available())
-		input_word = Serial.read();
+  while(Serial.available())
+    {
+      char inChar = (char)Serial.read(); //read the input
+      inputString += inChar;        //make a string of the characters coming on serial
+    }
 
-	//setting the magnitude of any action
-	int magnitude = 0;
-	switch(input_word){
-		case 0:
-			magnitude = 0;
-			break;
-		case 1:
-			magnitude = 64;
-			break;
-		case 2:
-			magnitude = 128;
-			break;
-		case 3:
-			magnitude = 192;
-			break;
-		case 4:
-			magnitude = 255;
-			break;
-	}
+  //Setting the magnitude of any action  
+  if (inputString == "0")
+    magnitude = 0;
+  else if (inputString == "1")
+    magnitude = 64;
+  else if (inputString == "2")
+    magnitude = 128;
+  else if (inputString == "3")
+    magnitude = 192;
+  else if (inputString == "4")
+    magnitude = 255;
 
-	//moving the car according to the needed direction
-	switch(input_word){
-		case 'F':
-			forward(magnitude);
-			break;
-		case 'B':
-			backward(magnitude);
-			break;
-		case 'L':
-			turn_left(magnitude);
-			break;
-		case 'R':
-			turn_right(magnitude);
-			break;
-		case 'S':
-			stop();
-			break;
+  //taking action depending on the sent charachter
+  if (inputString == "F")
+    forward(magnitude);
+  else if (inputString == "B")
+    backward(magnitude);
+  else if (inputString == "L")
+    turn_left(magnitude);
+  else if (inputString == "R")
+    turn_right(magnitude);
+  else if (inputString == "S")
+    stop_car();
 
-	}
+ inputString = ""; //resetting the input string
 }
 
 void forward(int mag){
@@ -99,7 +90,7 @@ void turn_left(int mag){
 	digitalWrite(A2_pin,i);
 	digitalWrite(A1_pin,1-i);
 	digitalWrite(B2_pin,1-i);
-	digitalWrite(B1_pin,1);
+	digitalWrite(B1_pin,i);
 	analogWrite(en_motorA,mag);
 	analogWrite(en_motorB,mag);
 }
@@ -114,8 +105,8 @@ void turn_right(int mag){
 	analogWrite(en_motorB,mag);
 }
 
-void stop(){
-	digitalWrite(A2_pin,0);-
+void stop_car(){
+	digitalWrite(A2_pin,0);
 	digitalWrite(A1_pin,0);
 	digitalWrite(B2_pin,0);
 	digitalWrite(B1_pin,0);
