@@ -1,9 +1,11 @@
 /*
 Author : Ahmad Hassan Yassin AbdulAziz
 This code uses this android App : http://www.ardumotive.com/bluetooth-rc-car.html
-Add the motor pin in the #define lines
+Add the circuit pin in the macros lines (line 7 t0 line 15)
 To modify the directions in the function modify the "i" intger ivariable 
 */
+
+//connections for the DC motor driver
 #define en_motorA 10
 #define en_motorB 11
 #define A1_pin 9
@@ -11,14 +13,26 @@ To modify the directions in the function modify the "i" intger ivariable
 #define B1_pin 7 
 #define B2_pin 6
 
+//connections for the ultrasonic rangefinder
+#define trigPin 5
+#define echoPin 4
+#define safety_distance 100
+
 String inputString="";
-int magnitude
+int magnitude;
+int distance;
+const int brakes_time = 1000;
+unsigned long currentMillis;
+unsigned long previousMillis = 0;
+const int interval = 1000;
 
 void forward(int mag);
 void backward(int mag);
 void turn_left(int mag);
 void turn_right(int mag);
 void stop_car();
+
+float get_distance();
 
 void setup(){
 	Serial.begin(9600);
@@ -31,7 +45,7 @@ void setup(){
 }
 
 void loop(){
-	//Take the iput word from the app
+  //Take the iput word from the app
   while(Serial.available())
     {
       char inChar = (char)Serial.read(); //read the input
@@ -63,8 +77,17 @@ void loop(){
     stop_car();
 
  inputString = ""; //resetting the input string
-}
 
+ distance = get_distance();
+ currentMillis = millis();
+ if (distance <= safety_distance)
+ {
+ 	backward(255);
+ 	delay(brakes_time);
+ 	Serial.println("X");
+ }
+
+}
 void forward(int mag){
 	int i = 1;
 	digitalWrite(A2_pin,i);
@@ -112,4 +135,17 @@ void stop_car(){
 	digitalWrite(B1_pin,0);
 	digitalWrite(en_motorA,0);
 	digitalWrite(en_motorB,0);
+}
+
+float get_distance(){
+  long duration, range;
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+//  delayMicroseconds(1000); - Removed this line
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  duration = pulseIn(echoPin, HIGH);
+  range = (duration/2) / 29.1;
+  return range;
 }
