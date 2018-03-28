@@ -20,11 +20,9 @@ To modify the directions in the function modify the "i" intger ivariable
 
 String inputString="";
 int magnitude;
-int distance;
+
+long distance;
 const int brakes_time = 1000;
-unsigned long currentMillis;
-unsigned long previousMillis = 0;
-const int interval = 1000;
 
 void forward(int mag);
 void backward(int mag);
@@ -32,7 +30,7 @@ void turn_left(int mag);
 void turn_right(int mag);
 void stop_car();
 
-float get_distance();
+long get_distance();
 
 void setup(){
 	Serial.begin(9600);
@@ -76,17 +74,16 @@ void loop(){
   else if (inputString == "S")
     stop_car();
 
- inputString = ""; //resetting the input string
-
- distance = get_distance();
- currentMillis = millis();
- if (distance <= safety_distance)
- {
- 	backward(255);
- 	delay(brakes_time);
- 	Serial.println("X");
- }
-
+  inputString = ""; //resetting the input string
+ 
+	distance = get_distance();
+	if (distance <= safety_distance)
+	{
+ 		backward(255);
+		Serial.println("X");
+		delay(brakes_time);
+		Serial.println("Y");
+	}
 }
 void forward(int mag){
 	int i = 1;
@@ -137,12 +134,11 @@ void stop_car(){
 	digitalWrite(en_motorB,0);
 }
 
-float get_distance(){
+long get_distance(){
   long duration, range;
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
   digitalWrite(trigPin, HIGH);
-//  delayMicroseconds(1000); - Removed this line
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
   duration = pulseIn(echoPin, HIGH);
