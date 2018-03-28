@@ -1,8 +1,9 @@
 /*
 Author : Ahmad Hassan Yassin AbdulAziz
-This code uses this android App : http://www.ardumotive.com/bluetooth-rc-car.html
-Add the motor pin in the #define lines
-To modify the directions in the function modify the "i" intger ivariable 
+This code implements a line follower algorithm using a 2WD car
+using 3 line follower sensors in the front and another 3 sensors in the back
+Add the motor pins in the #define lines
+To reverse directions in the motion functions modify the "i" intger variable
 */
 #define en_motorA 10
 #define en_motorB 11
@@ -11,9 +12,6 @@ To modify the directions in the function modify the "i" intger ivariable
 #define B1_pin 7 
 #define B2_pin 6
 
-String inputString="";
-int magnitude
-
 void forward(int mag);
 void backward(int mag);
 void turn_left(int mag);
@@ -21,7 +19,6 @@ void turn_right(int mag);
 void stop_car();
 
 void setup(){
-	Serial.begin(9600);
 	pinMode(en_motorB, OUTPUT);
 	pinMode(en_motorA, OUTPUT);
 	pinMode(A1_pin, OUTPUT);
@@ -31,38 +28,6 @@ void setup(){
 }
 
 void loop(){
-	//Take the iput word from the app
-  while(Serial.available())
-    {
-      char inChar = (char)Serial.read(); //read the input
-      inputString += inChar;        //make a string of the characters coming on serial
-    }
-
-  //Setting the magnitude of any action  
-  if (inputString == "0")
-    magnitude = 0;
-  else if (inputString == "1")
-    magnitude = 64;
-  else if (inputString == "2")
-    magnitude = 128;
-  else if (inputString == "3")
-    magnitude = 192;
-  else if (inputString == "4")
-    magnitude = 255;
-
-  //taking action depending on the sent charachter
-  if (inputString == "F")
-    forward(magnitude);
-  else if (inputString == "B")
-    backward(magnitude);
-  else if (inputString == "L")
-    turn_left(magnitude);
-  else if (inputString == "R")
-    turn_right(magnitude);
-  else if (inputString == "S")
-    stop_car();
-
- inputString = ""; //resetting the input string
 }
 
 void forward(int mag){
