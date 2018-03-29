@@ -1,7 +1,7 @@
 #include "IRremote.h"
 #include <Servo.h>
 
-//Pins for motor A 
+//Pins for motorA 
 const int MotorA1 = 6;
 const int MotorA2 = 7; 
 //Pins for motor B 
