@@ -16,12 +16,12 @@ To modify the directions in the function modify the "i" intger ivariable
 //connections for the ultrasonic rangefinder
 #define trigPin 5
 #define echoPin 4
-#define safety_distance 100
+#define safety_distance 10
 
 String inputString="";
 int magnitude;
 
-long distance;
+double distance = 200;
 const int brakes_time = 1000;
 
 void forward(int mag);
@@ -29,8 +29,7 @@ void backward(int mag);
 void turn_left(int mag);
 void turn_right(int mag);
 void stop_car();
-
-long get_distance();
+double get_distance();
 
 void setup(){
 	Serial.begin(9600);
@@ -40,6 +39,8 @@ void setup(){
 	pinMode(A2_pin, OUTPUT);
 	pinMode(B1_pin, OUTPUT);
 	pinMode(B2_pin, OUTPUT);
+  pinMode(trigPin,OUTPUT);
+  pinMode(echoPin,INPUT);
 }
 
 void loop(){
@@ -77,12 +78,16 @@ void loop(){
   inputString = ""; //resetting the input string
  
 	distance = get_distance();
-	if (distance <= safety_distance)
+  Serial.print("1 ");Serial.println(distance);
+	if ((distance <= safety_distance) && (distance != -1))
 	{
  		backward(255);
-		Serial.println("LR255G0B0");
+    Serial.println(distance);
+		//Serial.println("LR255G0B0");
 		delay(brakes_time);
-		Serial.println("LR0G255B0");
+    stop_car();
+		//Serial.println("LR0G255B0");
+    distance = get_distance();
 	}
 }
 void forward(int mag){
@@ -134,8 +139,8 @@ void stop_car(){
 	digitalWrite(en_motorB,0);
 }
 
-long get_distance(){
-  long duration, range;
+double get_distance(){
+  double duration, range;
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
   digitalWrite(trigPin, HIGH);
@@ -143,5 +148,8 @@ long get_distance(){
   digitalWrite(trigPin, LOW);
   duration = pulseIn(echoPin, HIGH);
   range = (duration/2) / 29.1;
-  return range;
+  if(range >= 200 || range <= 0)
+    return -1;
+  else
+    return range;
 }
