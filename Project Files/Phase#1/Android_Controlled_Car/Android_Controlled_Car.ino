@@ -1,6 +1,6 @@
 /*
 Author : Ahmad Hassan Yassin AbdulAziz
-This code uses this android App : http://www.ardumotive.com/bluetooth-rc-car.html
+This code uses the included app
 Add the circuit pin in the macros lines (line 7 t0 line 15)
 To modify the directions in the function modify the "i" intger ivariable 
 */
@@ -80,9 +80,9 @@ void loop(){
 	if (distance <= safety_distance)
 	{
  		backward(255);
-		Serial.println("X");
+		Serial.println("LR255G0B0");
 		delay(brakes_time);
-		Serial.println("Y");
+		Serial.println("LR0G255B0");
 	}
 }
 void forward(int mag){
