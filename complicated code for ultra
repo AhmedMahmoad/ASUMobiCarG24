@@ -108,7 +108,7 @@ void watchsurrounding(){ //Meassures distances to the right, left, front, left d
   ldiagonalscanval = watch();
   if(ldiagonalscanval<distancelimit){stopmove();}
   head.write(160); //Didn't use 180 degrees because my servo is not able to take this angle
-  delay(300);
+  delay(200);
   leftscanval = watch();
   if(leftscanval<sidedistancelimit){stopmove();}
   head.write(120);
@@ -129,7 +129,7 @@ void watchsurrounding(){ //Meassures distances to the right, left, front, left d
   if(rightscanval<sidedistancelimit){stopmove();}
 
   head.write(80); //Finish looking around (look forward again)
-  delay(300);
+  delay(200);
 }
 
 char decide(){
