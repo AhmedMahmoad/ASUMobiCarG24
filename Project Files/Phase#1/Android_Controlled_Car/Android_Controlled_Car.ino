@@ -82,6 +82,8 @@ void loop(){
  		backward(255);
 		Serial.println("X");
 		delay(brakes_time);
+		//forward(255);
+		//delay(breaks_time);
 		Serial.println("Y");
 	}
 }
