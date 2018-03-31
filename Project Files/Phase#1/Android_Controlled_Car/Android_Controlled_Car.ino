@@ -82,12 +82,8 @@ void loop(){
 	{
  		backward(255);
     Serial.println(distance);
-		//Serial.println("LR255G0B0");
 		delay(brakes_time);
     stop_car();
-    delay(brakes_time);
-		//Serial.println("LR0G255B0");
-    distance = get_distance();
 	}
 }
 void forward(int mag){
