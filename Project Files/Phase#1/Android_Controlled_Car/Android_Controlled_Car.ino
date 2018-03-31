@@ -4,7 +4,6 @@ This code uses the included app
 Add the circuit pin in the macros lines (line 7 t0 line 15)
 To modify the directions in the function modify the "i" intger ivariable 
 */
-
 //connections for the DC motor driver
 #define en_motorA 10
 #define en_motorB 11
@@ -16,13 +15,13 @@ To modify the directions in the function modify the "i" intger ivariable
 //connections for the ultrasonic rangefinder
 #define trigPin 5
 #define echoPin 4
-#define safety_distance 10
+#define safety_distance 15
 
 String inputString="";
 int magnitude;
 
-double distance = 200;
-const int brakes_time = 1000;
+unsigned int distance = 200;
+const int brakes_time = 50;
 
 void forward(int mag);
 void backward(int mag);
@@ -86,6 +85,7 @@ void loop(){
 		//Serial.println("LR255G0B0");
 		delay(brakes_time);
     stop_car();
+    delay(brakes_time);
 		//Serial.println("LR0G255B0");
     distance = get_distance();
 	}
@@ -140,14 +140,18 @@ void stop_car(){
 }
 
 double get_distance(){
-  double duration, range;
+  unsigned long duration;
+  float range;
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
+  
   digitalWrite(trigPin, HIGH);
   delayMicroseconds(10);
+  
   digitalWrite(trigPin, LOW);
   duration = pulseIn(echoPin, HIGH);
-  range = (duration/2) / 29.1;
+  
+  range = (float)duration*0.034/2;
   if(range >= 200 || range <= 0)
     return -1;
   else
