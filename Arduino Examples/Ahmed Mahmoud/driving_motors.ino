@@ -62,5 +62,5 @@ void loop()
      digitalWrite  (b1,HIGH);
      digitalWrite  (b2,HIGH);
      
-
+    }}
 }
