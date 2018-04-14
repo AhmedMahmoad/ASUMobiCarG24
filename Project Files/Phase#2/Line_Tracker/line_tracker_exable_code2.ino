@@ -1,3 +1,4 @@
+//Line tracking code by 5 sensor
 #define lmotorf 4 //Motor A1
 #define lmotorb 5 //Motor A2
 #define rmotorf 6 //Motor B1
@@ -27,7 +28,7 @@ int sensor3=digitalRead(10);//sensor3
 int sensor4=digitalRead(11);//sensor4
 int sensor5=digitalRead(12);//sensor5
 
-if((sensor2==LOW)&&(sensor3==LOW)&&(sensor4==LOW)) //When ALL ARE on WHITE line
+if((sensor2==LOW)&&(sensor3==LOW)&&(sensor4==LOW)) //When ALL ARE on Black line
 {
 
 digitalWrite(lmotorf,HIGH);
