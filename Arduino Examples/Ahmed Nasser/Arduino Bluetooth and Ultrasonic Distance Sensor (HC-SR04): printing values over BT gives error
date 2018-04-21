@@ -1,0 +1,20 @@
+int trig = 10;
+int echo = 7;
+void setup(){ 
+  Serial.begin(9600);
+}
+void loop(){
+ long distance = getUltrasonicAltitude();
+ Serial.println(distance);
+}
+long getUltrasonicAltitude(){
+  long duration, cm;
+  digitalWrite(trig, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trig, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trig, LOW);
+  duration = pulseIn(echo,HIGH);
+  cm = duration/29/2;
+  return cm;
+}
