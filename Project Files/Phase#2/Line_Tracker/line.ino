@@ -11,14 +11,14 @@ pinMode(f2,OUTPUT);
 pinMode(b1,OUTPUT);
 pinMode(b2,OUTPUT);
 pinMode(R,INPUT);
-//pinMode(C,INPUT); 
+pinMode(C,INPUT); 
 pinMode(L,INPUT);
 }
 void loop() {
 int L=digitalRead (4);
-//int C =digitalRead (3);
+int C =digitalRead (3);
 int  R=digitalRead (2);
-if(R==HIGH&&L==HIGH){
+if(R==HIGH&&L==HIGHR==HIGH){
      digitalWrite  (f1,LOW);
      digitalWrite  (f2,LOW);
      digitalWrite  (b1,HIGH);
