@@ -5,8 +5,8 @@ int irSensorAmbient[NBR_SENSORS]; // sensor value with no reflection
 int irSensorReflect[NBR_SENSORS]; // value considered detecting an object
 int irSensorEdge[NBR_SENSORS]; // value considered detecting an edge
 boolean isDetected[NBR_SENSORS] = {false,false}; // set true if object detected
-const int irReflectThreshold = 10; // % level below ambient to trigger reflection
-const int irEdgeThreshold = 90; // % level above ambient to trigger edge
+const int irReflectThreshold = 15; // % level below ambient to trigger reflection
+const int irEdgeThreshold = 95; // % level above ambient to trigger edge
 void irSensorBegin()
 {
 for(int sensor = 0; sensor < NBR_SENSORS; sensor++)
