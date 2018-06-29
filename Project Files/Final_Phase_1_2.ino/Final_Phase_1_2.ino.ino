@@ -1,5 +1,7 @@
 /*
-Author : Ahmad Hassan Yassin AbdulAziz
+Authors :
+   Ahmad Hassan Yassin AbdulAziz
+   Islam Shaaban 
 This code uses the included app
 Add the circuit pin in the macros lines (line 7 t0 line 15)
 To modify the directions in the function modify the "i" intger ivariable 
@@ -38,18 +40,18 @@ void stop_car();
 double get_distance();
 
 void setup(){
-	Serial.begin(9600);
+  Serial.begin(9600);
 
   pinMode(PinL, INPUT);  
   pinMode(PinC, INPUT);
   pinMode(PinR, INPUT);
 
-	pinMode(en_motorB, OUTPUT);
-	pinMode(en_motorA, OUTPUT);
-	pinMode(A1_pin, OUTPUT);
-	pinMode(A2_pin, OUTPUT);
-	pinMode(B1_pin, OUTPUT);
-	pinMode(B2_pin, OUTPUT);
+  pinMode(en_motorB, OUTPUT);
+  pinMode(en_motorA, OUTPUT);
+  pinMode(A1_pin, OUTPUT);
+  pinMode(A2_pin, OUTPUT);
+  pinMode(B1_pin, OUTPUT);
+  pinMode(B2_pin, OUTPUT);
   
   pinMode(trigPin,OUTPUT);
   pinMode(echoPin,INPUT);
@@ -108,6 +110,11 @@ void loop(){
         turn_left(85);
         delay(5);
       }
+      else if (state==0)
+      {
+        stop_car();
+        delay(5); 
+      }
 
        
       if ( (LState == HIGH && CState == LOW && RState== LOW) )
@@ -132,15 +139,11 @@ void loop(){
       {
        // TODO: add this state
       }
-
   }
 
-  inputString = ""; //resetting the input string
- 
-	distance = get_distance();
+  distance = get_distance();
   // Serial.print("1 ");Serial.println(distance);
   
-  ///////////
   if ((distance <= safety_distance) && (distance != -1))
   {
     backward(255);
@@ -148,58 +151,57 @@ void loop(){
     delay(brakes_time);
     stop_car();
   }
-
- 
-
+  
+  inputString = ""; //resetting the input string
 }
 
 void forward(int mag){
-	int i = 1;
-	digitalWrite(A2_pin,i);
-	digitalWrite(A1_pin,1-i);
-	digitalWrite(B2_pin,i);
-	digitalWrite(B1_pin,1-i);
-	analogWrite(en_motorA,mag);
-	analogWrite(en_motorB,mag);
+  int i = 1;
+  digitalWrite(A2_pin,i);
+  digitalWrite(A1_pin,1-i);
+  digitalWrite(B2_pin,i);
+  digitalWrite(B1_pin,1-i);
+  analogWrite(en_motorA,mag);
+  analogWrite(en_motorB,mag);
 }
 
 void backward(int mag){
-	int i = 0;
-	digitalWrite(A2_pin,i);
-	digitalWrite(A1_pin,1-i);
-	digitalWrite(B2_pin,i);
-	digitalWrite(B1_pin,1-i);
-	analogWrite(en_motorA,mag);
-	analogWrite(en_motorB,mag);
+  int i = 0;
+  digitalWrite(A2_pin,i);
+  digitalWrite(A1_pin,1-i);
+  digitalWrite(B2_pin,i);
+  digitalWrite(B1_pin,1-i);
+  analogWrite(en_motorA,mag);
+  analogWrite(en_motorB,mag);
 }
 
-void turn_left(int mag){	
-	int i = 1;
-	digitalWrite(A2_pin,i);
-	digitalWrite(A1_pin,1-i);
-	digitalWrite(B2_pin,1-i);
-	digitalWrite(B1_pin,i);
-	analogWrite(en_motorA,mag);
-	analogWrite(en_motorB,mag);
+void turn_left(int mag){  
+  int i = 1;
+  digitalWrite(A2_pin,i);
+  digitalWrite(A1_pin,1-i);
+  digitalWrite(B2_pin,1-i);
+  digitalWrite(B1_pin,i);
+  analogWrite(en_motorA,mag);
+  analogWrite(en_motorB,mag);
 }
 
 void turn_right(int mag){
-	int i = 0;
-	digitalWrite(A2_pin,i);
-	digitalWrite(A1_pin,1-i);
-	digitalWrite(B2_pin,1-i);
-	digitalWrite(B1_pin,i);
-	analogWrite(en_motorA,mag);
-	analogWrite(en_motorB,mag);
+  int i = 0;
+  digitalWrite(A2_pin,i);
+  digitalWrite(A1_pin,1-i);
+  digitalWrite(B2_pin,1-i);
+  digitalWrite(B1_pin,i);
+  analogWrite(en_motorA,mag);
+  analogWrite(en_motorB,mag);
 }
 
 void stop_car(){
-	digitalWrite(A2_pin,0);
-	digitalWrite(A1_pin,0);
-	digitalWrite(B2_pin,0);
-	digitalWrite(B1_pin,0);
-	digitalWrite(en_motorA,0);
-	digitalWrite(en_motorB,0);
+  digitalWrite(A2_pin,0);
+  digitalWrite(A1_pin,0);
+  digitalWrite(B2_pin,0);
+  digitalWrite(B1_pin,0);
+  digitalWrite(en_motorA,0);
+  digitalWrite(en_motorB,0);
 }
 
 double get_distance(){
@@ -220,3 +222,4 @@ double get_distance(){
   else
     return range;
 }
+
