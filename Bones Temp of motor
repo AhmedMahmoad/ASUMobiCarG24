@@ -1,0 +1,156 @@
+#define en_motorA 10
+#define en_motorB 11
+#define A1_pin 9
+#define A2_pin 8
+#define B1_pin 7 
+#define B2_pin 6
+float tempC;
+int reading;
+int tempPin = A0;
+  String inputString="";
+  int magnitude;
+  const int brakes_time = 50;
+  void forward(int mag);
+  void backward(int mag);
+  void turn_left(int mag);
+  void turn_right(int mag);
+  void stop_car();
+   void setup()
+  {
+    Serial.begin(9600);
+    analogReference(INTERNAL);
+
+    pinMode(en_motorB, OUTPUT);
+    pinMode(en_motorA, OUTPUT);
+    pinMode(A1_pin, OUTPUT);
+    pinMode(A2_pin, OUTPUT);
+    pinMode(B1_pin, OUTPUT);
+    pinMode(B2_pin, OUTPUT);
+  }
+  void loop()
+  {
+
+     while(Serial.available())
+    {
+      char inChar = (char)Serial.read(); //read the input
+      inputString += inChar;        //make a string of the characters coming on serial
+    }
+    //Setting the magnitude of any action  
+    if (inputString == "0")
+    {
+      magnitude = 0;
+    }
+    else if (inputString == "1")
+    {
+      magnitude = 64;
+    }
+    else if (inputString == "2")
+    {
+      magnitude = 128;
+    }
+    else if (inputString == "3")
+    {
+      magnitude = 192;
+    }
+    else if (inputString == "4")
+    {
+      magnitude = 255;
+    }
+    //taking action depending on the sent charachter
+    if (inputString == "F")
+    {
+      forward(magnitude);
+      reading = analogRead(tempPin);
+      tempC = reading / 9.31;
+      Serial.println(tempC);
+      while(tempC > 39.0 ) 
+      {
+        stop_car();
+        Serial.println("Warning, car stopped");
+        reading = analogRead(tempPin);
+        tempC = reading / 9.31;
+        Serial.println(tempC);
+      }
+    }
+    else if (inputString == "B")
+    {
+      backward(magnitude);
+      while(tempC > 39.0 ) 
+      {
+        stop_car();
+        Serial.println("Warning, car stopped");
+        reading = analogRead(tempPin);
+        tempC = reading / 9.31;
+        Serial.println(tempC);
+      }
+    }
+    else if (inputString == "L")
+    {
+      turn_left(magnitude);
+    }
+    else if (inputString == "R")
+    {
+      turn_right(magnitude);
+    }
+    else if (inputString == "S")
+    {
+      stop_car();
+    }
+    inputString = ""; //resetting the input string
+ }
+ 
+ 
+ 
+    void forward(int mag)
+{
+	int i = 1;
+	digitalWrite(A2_pin,i);
+	digitalWrite(A1_pin,1-i);
+	digitalWrite(B2_pin,i);
+	digitalWrite(B1_pin,1-i);
+	analogWrite(en_motorA,mag);
+	analogWrite(en_motorB,mag);
+}
+
+void backward(int mag)
+{
+	int i = 0;
+	digitalWrite(A2_pin,i);
+	digitalWrite(A1_pin,1-i);
+	digitalWrite(B2_pin,i);
+	digitalWrite(B1_pin,1-i);
+	analogWrite(en_motorA,mag);
+	analogWrite(en_motorB,mag);
+}
+
+void turn_left(int mag)
+{	
+	int i = 0;
+	digitalWrite(A2_pin,i);
+	digitalWrite(A1_pin,1-i);
+	digitalWrite(B2_pin,1-i);
+	digitalWrite(B1_pin,i);
+	analogWrite(en_motorA,mag);
+	analogWrite(en_motorB,mag);
+}
+
+void turn_right(int mag)
+{
+	int i = 1;
+	digitalWrite(A2_pin,i);
+	digitalWrite(A1_pin,1-i);
+	digitalWrite(B2_pin,1-i);
+	digitalWrite(B1_pin,i);
+	analogWrite(en_motorA,mag);
+	analogWrite(en_motorB,mag);
+}
+
+void stop_car()
+{
+	digitalWrite(A2_pin,0);
+	digitalWrite(A1_pin,0);
+	digitalWrite(B2_pin,0);
+	digitalWrite(B1_pin,0);
+	digitalWrite(en_motorA,0);
+	digitalWrite(en_motorB,0);
+}
