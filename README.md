@@ -21,5 +21,5 @@ https://www.youtube.com/watch?v=uvCK-f6CrVA
 # phase 2 line tracking
 https://www.youtube.com/watch?v=qBe4NgLH82c //
 https://www.youtube.com/watch?v=-J3-bOlq5Io
-# phase 3 acurate  Moving
+# phase 3 accurate  Movement
 https://www.youtube.com/watch?v=eaGGO4WKAso
